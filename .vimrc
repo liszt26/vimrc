@@ -202,7 +202,8 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#3c3c3c ctermbg=lightg
 let g:indent_guides_color_change_percent = 30
 " ガイドの幅
 let g:indent_guides_guide_size = 1
-
+colorscheme molokai
+syntax on
 
 
 set rtp+=~/.vim/bundle/vundle/
@@ -213,8 +214,6 @@ Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/unite.vim'
 Bundle 'tpope/vim-fugitive'
-Bundle 'vim-endwise'
-Bundle 'scrooloose/nerdtree'
 Bundle 'vim-scripts/dbext.vim'
 Bundle 'nathanaelkane/vim-indent-guides'
 
