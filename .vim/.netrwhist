@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/Users/liszt26/Documents/rails/timecapsule/config'
+let g:netrw_dirhist_2='/Users/liszt26/Documents/rails/timecapsule'
+let g:netrw_dirhist_3='/Users/liszt26/Documents/rails/timecapsule/app'
+let g:netrw_dirhist_4='/Users/liszt26/Documents/rails/timecapsule/app/controllers'
+let g:netrw_dirhist_5='/Users/liszt26/Documents/rails/timecapsule/config'
+let g:netrw_dirhist_6='/Users/liszt26/Documents/rails/timecapsule'
+let g:netrw_dirhist_7='/Users/liszt26/Documents/rails/timecapsule/app'
+let g:netrw_dirhist_8='/Users/liszt26/Documents/rails/timecapsule/app/controllers'
