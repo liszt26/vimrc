@@ -1,8 +1,18 @@
- " Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
- " Description: A minimal, but feature rich, example .vimrc. If you are a
- " Vi互換モードをオフ（Vimの拡張機能を有効）
- set nocompatible
- syntax on
+"adfa/close Configuration file for vim
+set modelines=0		" CVE-2007-2438
+
+" Normally we use vim-extensions. If you want true vi-compatibility
+" remove change the following statements
+set nocompatible	" Use Vim defaults instead of 100% vi compatibility
+set backspace=2		" more powerful backspacing
+
+" Don't write backup file if vim is being called by "crontab -e"
+au BufWrite /private/tmp/crontab.* set nowritebackup
+" Don't write backup file if vim is being called by "chpass"
+au BufWrite /private/etc/pw.* set nowritebackup
+
+colorscheme molokai
+syntax on
  set hidden
  set noswapfile
  set wildmenu
@@ -80,9 +90,12 @@ function! s:GetHighlight(hi)
   return hl
 endfunction
 
-
- hi ZenkakuSpace gui=underline guifg=darkgrey guibg=DarkBlue cterm=underline ctermfg=lightblue " 全角スペースの定義
- match ZenkakuSpace /　/      " 全角スペースの色を変更
+""""""""""""""""""""""""""""""
+" 全角スペースの表示
+""""""""""""""""""""""""""""""
+highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
+match ZenkakuSpace /　/       " 全角スペースの色を変更
+""""""""""""""""""""""""""""""
 
 set cursorline       " カーソル行をハイライト
  augroup cch
@@ -142,50 +155,39 @@ inoremap <expr><C-l> neocomplcache#complete_common_string()
 "imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 " <CR>: close popup and save indent.
 "inoremap <expr><CR> neocomplcache#smart_close_popup() . (&indentexpr != '' ? "\<C-f>\<CR>X\<BS>":"\<CR>")
-inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup() . "\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup() . "\<C-h>"
-inoremap <expr><C-y> neocomplcache#close_popup()
 inoremap <expr><C-e> neocomplcache#cancel_popup()
 " 自動保管の色
 hi Pmenu guibg=#666666
 hi PmenuSel guibg=#8cd0d3 guifg=#666666
 hi PmenuSbar guibg=#333333
 
-function! s:my_crinsert()
-    return pumvisible() ? neocomplcache#close_popup() : "\<Cr>"
-endfunction
-inoremap <silent> <CR> <C-R>=<SID>my_crinsert()<CR>
 
-""" unite.vim
+""""""""""""""""""""""""""""""
+" Unit.vimの設定
+""""""""""""""""""""""""""""""
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
 " バッファ一覧
-nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+noremap <C-P> :Unite buffer<CR>
 " ファイル一覧
-nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" レジスタ一覧
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-" 最近使用したファイル一覧
-nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-" 常用セット
-nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-" 全部乗せ
-nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
-
+noremap <C-N> :Unite -buffer-name=file file<CR>
+" 最近使ったファイルの一覧
+noremap <C-Z> :Unite file_mru<CR>
+" sourcesを「今開いているファイルのディレクトリ」とする
+noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
 " ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 " ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 " ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
-
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+""""""""""""""""""""""""""""""
 
 " IndentGuidesEven
 " vim立ち上げたときに、自動的にvim-indent-guidesをオンにする
@@ -202,25 +204,20 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#3c3c3c ctermbg=lightg
 let g:indent_guides_color_change_percent = 30
 " ガイドの幅
 let g:indent_guides_guide_size = 1
-colorscheme molokai
-syntax on
 
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'Shougo/neobundle.vim'
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/neomru.vim'
 Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
 Bundle 'vim-scripts/dbext.vim'
 Bundle 'nathanaelkane/vim-indent-guides'
-
+" コメントON/OFFを手軽に実行
+Bundle 'tomtom/tcomment_vim'
+" 行末の半角スペースを可視化
+Bundle 'bronson/vim-trailing-whitespace'
 "filetype plugin  on
-
-
-
-
-
-
