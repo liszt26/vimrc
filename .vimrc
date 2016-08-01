@@ -10,6 +10,9 @@ set backspace=2		" more powerful backspacing
 au BufWrite /private/tmp/crontab.* set nowritebackup
 " Don't write backup file if vim is being called by "chpass"
 au BufWrite /private/etc/pw.* set nowritebackup
+" ノーマルモード時だけ ; と : を入れ替える
+"nnoremap ; :
+"nnoremap : ;
 
 colorscheme molokai
 syntax on
@@ -66,7 +69,6 @@ if has('syntax')
   autocmd InsertLeave * call s:StatusLine('Leave')
   augroup END
 endif
-
 
 
 let s:slhlcmd = ''
@@ -134,37 +136,6 @@ endfunction
 noremap <c-e> :<c-u>:call ExecuteNERDTree()<cr>
 "</cr></c-u></c-e>
 
-
-"-------------------------------------------
-" neocomplcache
-"-------------------------------------------
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_max_list = 30
-let g:neocomplcache_auto_completion_start_length = 2
-let g:neocomplcache_enable_smart_case = 1
-"" like AutoComplPop
-let g:neocomplcache_enable_auto_select = 2
-"" search with camel case like Eclipse
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
-"imap <C-k> <Plug>(neocomplcache_snippets_expand)
-"smap <C-k> <Plug>(neocomplcache_snippets_expand)
-inoremap <expr><C-g> neocomplcache#undo_completion()
-inoremap <expr><C-l> neocomplcache#complete_common_string()
-" SuperTab like snippets behavior.
-"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-" <CR>: close popup and save indent.
-"inoremap <expr><CR> neocomplcache#smart_close_popup() . (&indentexpr != '' ? "\<C-f>\<CR>X\<BS>":"\<CR>")
-" <TAB>: completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-e> neocomplcache#cancel_popup()
-" 自動保管の色
-hi Pmenu guibg=#666666
-hi PmenuSel guibg=#8cd0d3 guifg=#666666
-hi PmenuSbar guibg=#333333
-
-
 """"""""""""""""""""""""""""""
 " Unit.vimの設定
 """"""""""""""""""""""""""""""
@@ -218,6 +189,10 @@ Bundle 'vim-scripts/dbext.vim'
 Bundle 'nathanaelkane/vim-indent-guides'
 " コメントON/OFFを手軽に実行
 Bundle 'tomtom/tcomment_vim'
+Bundle 'toyamarinyon/vim-swift'
 " 行末の半角スペースを可視化
-Bundle 'bronson/vim-trailing-whitespace'
+"Bundle 'bronson/vim-trailing-whitespace'
 "filetype plugin  on
+
+nnoremap <silent> gp :bprevious<CR>
+nnoremap <silent> gn :bnext<CR>
